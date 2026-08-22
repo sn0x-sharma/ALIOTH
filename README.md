@@ -1,24 +1,20 @@
-# ALIOTH — Unified Offensive Security Framework
-
-ALIOTH is a single, mode-based executable combining 13 offensive security capabilities into one standalone tool. It uses a common evasion engine for all syscalls and provides state-of-the-art bypass techniques for modern Windows 10/11 environments including 24H2.
-
 ## Modes
 
-| Mode | Name | Description | Original Tool |
-|------|------|-------------|---------------|
-| 1 | **Umbra** | Evasion engine demo — indirect syscalls, stack spoofing, Halo's Gate | Obolos |
-| 2 | **Charon** | Shellcode loader — module stomping, AES-NI/RC4 decryption, callback execution | Charon |
-| 3 | **Wraith** | LSASS dumper with PPL bypass — BYOVD chain, process cloning, ChaCha20-Poly1305 | Doppelganger |
-| 4 | **Revenant** | Process hollowing — transacted hollowing, thread hijacking, TLS callback | HollowReaper |
-| 5 | **Mortis** | LSASS MiniDump — manual minidump, selective regions, crash handler | SoulDumper |
-| 6 | **Shadow** | VSS SAM dumper — COM interface, raw disk read, hive parsing | NecroMirror |
-| 7 | **Hermes** | Kerberos TGT injection — LSA interface, silver/golden tickets, cross-domain | TGTConjuring |
-| 8 | **Eos** | Persistence engine — 10 techniques (Registry, Task Scheduler, WMI, COM, IFEO, LSA, Bootkit, AppX) | New |
-| 9 | **Helios** | Lateral movement — 10 techniques (PTH, WMI, PSExec, DCOM, Pipe, RDP, WinRM, SSH, PTK, GPO) | New |
-| 10 | **Nyx** | C2 communication — 10 channels (HTTPS, DNS, ICMP, SMB, WS, DoH, Telegram, GitHub, WCF, OneDrive) | New |
-| 11 | **Acheron** | Anti-forensics — 10 techniques (EventLog, Prefetch, USN, Timestomp, Shredder, AMSI, ETW, KernelCB, PE Infector, Shim) | New |
-| 12 | **Lachesis** | Data theft — 10 modules (Chrome, Firefox, Cookies, WiFi, Files, Screen, Webcam, Keylogger, Clipboard) | New |
-| 13 | **Tartarus** | FULL AUTO APT — 10 phases (Elevate→UAC→PPL→Dump→Persist→Wipe→C2→Lateral→Steal→Decoy) | New |
+| Mode | Name | Description | 
+|------|------|-------------|
+| 1 | **Umbra** | Evasion engine demo - indirect syscalls, stack spoofing, Halo's Gate |
+| 2 | **Charon** | Shellcode loader - module stomping, AES-NI/RC4 decryption, callback execution |
+| 3 | **Wraith** | LSASS dumper with PPL bypass - BYOVD chain, process cloning, ChaCha20-Poly1305 | Doppelganger |
+| 4 | **Revenant** | Process hollowing - transacted hollowing, thread hijacking, TLS callback | HollowReaper |
+| 5 | **Mortis** | LSASS MiniDump - manual minidump, selective regions, crash handler | SoulDumper |
+| 6 | **Shadow** | VSS SAM dumper - COM interface, raw disk read, hive parsing | NecroMirror |
+| 7 | **Hermes** | Kerberos TGT injection - LSA interface, silver/golden tickets, cross-domain | TGTConjuring |
+| 8 | **Eos** | Persistence engine - 10 techniques (Registry, Task Scheduler, WMI, COM, IFEO, LSA, Bootkit, AppX) | New |
+| 9 | **Helios** | Lateral movement - 10 techniques (PTH, WMI, PSExec, DCOM, Pipe, RDP, WinRM, SSH, PTK, GPO) | New |
+| 10 | **Nyx** | C2 communication - 10 channels (HTTPS, DNS, ICMP, SMB, WS, DoH, Telegram, GitHub, WCF, OneDrive) | New |
+| 11 | **Acheron** | Anti-forensics - 10 techniques (EventLog, Prefetch, USN, Timestomp, Shredder, AMSI, ETW, KernelCB, PE Infector, Shim) | New |
+| 12 | **Lachesis** | Data theft - 10 modules (Chrome, Firefox, Cookies, WiFi, Files, Screen, Webcam, Keylogger, Clipboard) | New |
+| 13 | **Tartarus** | FULL AUTO APT - 10 phases (Elevate→UAC→PPL→Dump→Persist→Wipe→C2→Lateral→Steal→Decoy) | New |
 
 ## Quick Start
 
@@ -130,10 +126,6 @@ ALIOTH.exe
 ├── Mode 12: Lachesis — Data Theft
 └── Mode 13: Tartarus — FULL AUTO APT
 ```
-
-## Disclaimer
-
-This tool is for authorized security testing and educational purposes only. Unauthorized use against systems you do not own or have explicit permission to test is illegal. The author accepts no liability for misuse.
 
 ---
 

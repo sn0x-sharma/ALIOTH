@@ -1,132 +1,645 @@
-## Modes
+# ALIOTH
 
-| Mode | Name | Description | 
-|------|------|-------------|
-| 1 | **Umbra** | Evasion engine demo - indirect syscalls, stack spoofing, Halo's Gate |
-| 2 | **Charon** | Shellcode loader - module stomping, AES-NI/RC4 decryption, callback execution |
-| 3 | **Wraith** | LSASS dumper with PPL bypass - BYOVD chain, process cloning, ChaCha20-Poly1305 | Doppelganger |
-| 4 | **Revenant** | Process hollowing - transacted hollowing, thread hijacking, TLS callback | HollowReaper |
-| 5 | **Mortis** | LSASS MiniDump - manual minidump, selective regions, crash handler | SoulDumper |
-| 6 | **Shadow** | VSS SAM dumper - COM interface, raw disk read, hive parsing | NecroMirror |
-| 7 | **Hermes** | Kerberos TGT injection - LSA interface, silver/golden tickets, cross-domain | TGTConjuring |
-| 8 | **Eos** | Persistence engine - 10 techniques (Registry, Task Scheduler, WMI, COM, IFEO, LSA, Bootkit, AppX) | New |
-| 9 | **Helios** | Lateral movement - 10 techniques (PTH, WMI, PSExec, DCOM, Pipe, RDP, WinRM, SSH, PTK, GPO) | New |
-| 10 | **Nyx** | C2 communication - 10 channels (HTTPS, DNS, ICMP, SMB, WS, DoH, Telegram, GitHub, WCF, OneDrive) | New |
-| 11 | **Acheron** | Anti-forensics - 10 techniques (EventLog, Prefetch, USN, Timestomp, Shredder, AMSI, ETW, KernelCB, PE Infector, Shim) | New |
-| 12 | **Lachesis** | Data theft - 10 modules (Chrome, Firefox, Cookies, WiFi, Files, Screen, Webcam, Keylogger, Clipboard) | New |
-| 13 | **Tartarus** | FULL AUTO APT - 10 phases (Elevate→UAC→PPL→Dump→Persist→Wipe→C2→Lateral→Steal→Decoy) | New |
+### Unified Offensive Operations & Adversary-Emulation Framework
 
-## Quick Start
+**ALIOTH** is a Windows-focused offensive security framework designed for authorized red-team operations, enterprise adversary simulation, malware analysis, security-control validation, and post-exploitation research.
 
-```cmd
-REM Build with 1024 polymorphic stubs
-build.bat 1024
+[![Platform](https://img.shields.io/badge/Platform-Windows%20x64-0078D6)]()
+[![Category](https://img.shields.io/badge/Category-Offensive%20Security-red)]()
+[![Focus](https://img.shields.io/badge/Focus-Red%20Team%20%7C%20Adversary%20Simulation-orange)]()
+[![Version](https://img.shields.io/badge/Version-3.0-black)]()
 
-REM Or 2048 for more entropy
-build.bat 2048
+---
 
-REM Run interactive
-ALIOTH.exe
+Use cases include:
 
-REM Or direct mode
-ALIOTH.exe --mode 3 --memory-only --encrypt
-```
+* Authorized enterprise red-team engagements
+* Adversary-emulation exercises
+* Purple-team operations
+* Active Directory security assessments
+* Windows endpoint security assessments
+* Post-exploitation research
+* Malware analysis and reverse engineering
+* EDR/XDR validation
+* Detection-engineering validation
+* Incident-response preparedness exercises
+* Internal security research
+* Authorized security-control testing
 
-## Features
+The framework is intended to model real-world adversary behavior in controlled engagements and can therefore interact with production-like enterprise environments when the engagement rules explicitly permit it.
 
-- **Common Evasion Engine**: All modes use ALIOTH core for indirect syscalls, stack spoofing, gadget rotation, SSN obfuscation
-- **Polymorphic Stubs**: 1024/2048 unique stubs with 4 padding variants per build
-- **TLS Per-Thread Context**: Zero global state, fully thread-safe
-- **ETW Patching**: Kills Event Tracing via direct syscall
-- **HWBP Detection**: Clears DR0-DR3 debug registers
-- **Decoy Threads**: 4 background threads with realistic behaviors
-- **XOR-Obfuscated Strings**: All string literals as stack character arrays
-- **No CRT Dependencies**: Pure C, MSVC x64 /O1 /GS- /GF- /Gy compilable
+---
 
-## Requirements
+# What is ALIOTH?
 
-- Windows 10/11 x64 (tested on 24H2)
-- Visual Studio 2022 with C++ Desktop Development
-- Developer Command Prompt for VS (for ml64/cl)
-- Python 3.x (for stub generation)
+ALIOTH is a unified offensive framework that brings multiple Windows post-exploitation and adversary-emulation capabilities into a common architecture.
 
-## Usage Examples
+Instead of maintaining separate proof-of-concept tooling for every stage of an operation, ALIOTH provides a single framework containing **13 operational modules** backed by shared execution, cryptographic, memory, and research infrastructure.
 
-### Umbra (Engine Test)
-```cmd
-ALIOTH.exe --mode 1
-```
+The supplied project documentation describes ALIOTH v3.0 as a unified framework combining the original capabilities of several predecessor projects with additional post-exploitation and automation modules.
 
-### Charon (Load Shellcode)
-```cmd
-REM Generate artifact
-python modes\charon\builder\charon_builder.py --payload beacon.bin --target Chakra.dll
+At a high level:
 
-REM Execute
-ALIOTH.exe --mode 2 --shellcode beacon.bin --target Chakra.dll
-```
-
-### Wraith (Dump LSASS)
-```cmd
-ALIOTH.exe --mode 3 --memory-only --encrypt --split
-```
-
-### Revenant (Hollow Process)
-```cmd
-ALIOTH.exe --mode 4 --target RuntimeBroker --payload shellcode.bin --technique 1
-```
-
-### Mortis (MiniDump)
-```cmd
-ALIOTH.exe --mode 5 --selective --memory-only
-```
-
-### Shadow (VSS SAM)
-```cmd
-ALIOTH.exe --mode 6 --delete-after-read --direct-read
-```
-
-### Hermes (TGT Injection)
-```cmd
-ALIOTH.exe --mode 7 --user administrator --domain corp.local --golden
-```
-
-### Tartarus (Full Auto APT)
-```cmd
-ALIOTH.exe --mode 13
-```
-
-## Architecture
-
-```
-ALIOTH.exe
-├── Core Engine (shared by all modes)
-│   ├── Indirect Syscalls (Halo's Gate)
-│   ├── Stack Spoofing (SilentMoonwalk)
-│   ├── Gadget Rotation (8 gadgets)
-│   ├── SSN Obfuscation (XOR at rest)
-│   ├── Mask Chaining (multi-frame)
-│   ├── TLS Context (per-thread)
-│   ├── ETW Patching
-│   ├── HWBP Detection
-│   ├── Random Masks (256+)
-│   └── Decoy Threads (4 threads)
-│
-├── Mode 1: Umbra — Engine Demo
-├── Mode 2: Charon — Shellcode Loader
-├── Mode 3: Wraith — LSASS Dumper
-├── Mode 4: Revenant — Process Hollowing
-├── Mode 5: Mortis — LSASS MiniDump
-├── Mode 6: Shadow — VSS SAM Dumper
-├── Mode 7: Hermes — Kerberos TGT
-├── Mode 8: Eos — Persistence Engine
-├── Mode 9: Helios — Lateral Movement
-├── Mode 10: Nyx — C2 Communication
-├── Mode 11: Acheron — Anti-Forensics
-├── Mode 12: Lachesis — Data Theft
-└── Mode 13: Tartarus — FULL AUTO APT
+```text
+                         ALIOTH
+                           │
+          ┌────────────────┼────────────────┐
+          │                │                │
+       Execution       Credential       Enterprise
+       & Memory         Research        Operations
+          │                │                │
+      ┌───┴───┐        ┌───┴───┐       ┌───┴────┐
+      │ Umbra │        │Wraith │       │ Hermes │
+      │Charon │        │Mortis │       │ Helios │
+      │Revenant        │Shadow │       │  Nyx   │
+      └───────┘        └───────┘       └────────┘
+                           │
+                 ┌─────────┴─────────┐
+                 │                   │
+             Persistence         Collection /
+             & Evasion           Operations
+                 │                   │
+           ┌─────┴─────┐       ┌────┴──────┐
+           │    Eos    │       │ Lachesis  │
+           │  Acheron  │       │           │
+           │ Tartarus  │       └───────────┘
+           └───────────┘
 ```
 
 ---
 
-**Author**: sn0x
+# Where ALIOTH Can Be Used
+
+ALIOTH is intended for authorized operations against environments such as:
+
+### Active Directory Environments
+
+```text
+┌─────────────────────────────────────────┐
+│             AD Environment              │
+│                                         │
+│  Domain Controller                      │
+│       │                                 │
+│       ├── Workstations                  │
+│       ├── Servers                       │
+│       ├── File Servers                  │
+│       ├── SQL / Application Servers     │
+│       ├── Admin Workstations            │
+│       └── Security Infrastructure       │
+│                                         │
+└─────────────────────────────────────────┘
+```
+
+Typical red-team objectives may include evaluating:
+
+* Credential exposure
+* Privilege boundaries
+* Kerberos security
+* Lateral-movement controls
+* Persistence detection
+* Endpoint telemetry
+* EDR/XDR visibility
+* Network monitoring
+* C2 detection
+* Data-loss controls
+
+### Windows Enterprise Environments
+
+ALIOTH can be incorporated into authorized assessments involving:
+
+* Windows endpoints
+* Windows servers
+* Domain-joined systems
+* Enterprise application servers
+* Security appliances
+* Identity infrastructure
+* Administrative workstations
+* Internal network segments
+
+### Red-Team Infrastructure
+
+A typical engagement may contain:
+
+```text
+                RED TEAM
+                   │
+            ┌──────┴──────┐
+            │ Operator    │
+            │ Workstation │
+            └──────┬──────┘
+                   │
+              ALIOTH
+                   │
+        ┌──────────┼──────────┐
+        │          │          │
+      C2/      Internal    Target
+   Infrastructure Network   Hosts
+```
+
+---
+
+# Core Capabilities
+
+ALIOTH contains thirteen operational modes:
+
+|  # | Mode     | Primary Area                                   |
+| -: | -------- | ---------------------------------------------- |
+| 01 | Umbra    | Execution & evasion research                   |
+| 02 | Charon   | In-memory payload loading                      |
+| 03 | Wraith   | Protected-process / credential-access research |
+| 04 | Revenant | Process injection                              |
+| 05 | Mortis   | Memory acquisition                             |
+| 06 | Shadow   | Offline credential-store acquisition           |
+| 07 | Hermes   | Kerberos operations                            |
+| 08 | Eos      | Persistence                                    |
+| 09 | Helios   | Lateral movement                               |
+| 10 | Nyx      | C2 communications                              |
+| 11 | Acheron  | Anti-forensics                                 |
+| 12 | Lachesis | Data collection                                |
+| 13 | Tartarus | Full-chain orchestration                       |
+
+The complete mode inventory is defined in the supplied project guide.
+
+Detailed mode internals are intentionally documented separately so the main README remains focused on installation, architecture, engagement use, and operator workflow.
+
+---
+
+# Installation
+
+## Requirements
+
+ALIOTH is a Windows/x64 project.
+
+Recommended build environment:
+
+```text
+Windows 10 / Windows 11 x64
+Visual Studio
+Desktop development with C++
+Windows SDK
+MASM
+Python 3.x
+Git
+```
+
+The source project uses a Windows build script and Microsoft development tooling.
+
+---
+
+## Clone the Repository
+
+```powershell
+git clone <REPOSITORY_URL>
+cd ALIOTH
+```
+
+Verify the development environment:
+
+```powershell
+cl
+link
+python --version
+git --version
+```
+
+Open a **Visual Studio Developer Command Prompt** before building.
+
+---
+
+# Building ALIOTH
+
+From the repository directory:
+
+```powershell
+cd C:\ALIOTH
+.\build.bat
+```
+
+The supplied implementation supports configurable build-generation parameters through the build script.
+
+For development environments, recommended repository structure is:
+
+```text
+ALIOTH/
+├── build/
+├── bin/
+├── core/
+├── modes/
+└── tools/
+```
+
+Keep generated binaries separate from source code.
+
+---
+
+# Binary Layout
+
+A normal build produces the primary ALIOTH executable and supporting development artifacts.
+
+```text
+ALIOTH/
+│
+├── ALIOTH.exe
+├── build.bat
+├── README.md
+│
+├── core/
+│   ├── ALIOTH.h
+│   ├── ALIOTH_config.h
+│   ├── engine.h
+│   ├── engine.c
+│   ├── tls_context.h
+│   ├── syscalls_base.asm
+│   └── ...
+│
+└── modes/
+    ├── umbra/
+    ├── charon/
+    ├── wraith/
+    ├── revenant/
+    ├── mortis/
+    ├── shadow/
+    ├── hermes/
+    ├── eos/
+    ├── helios/
+    ├── nyx/
+    ├── acheron/
+    ├── lachesis/
+    └── tartarus/
+```
+
+The supplied documentation describes this source organization and the shared `core/` plus 13 `modes/` architecture.
+
+---
+
+# Command-Line Interface
+
+ALIOTH supports both interactive operation and direct mode selection.
+
+### Interactive
+
+```powershell
+ALIOTH.exe
+```
+
+### Mode Selection
+
+The general CLI structure is:
+
+```powershell
+ALIOTH.exe --mode <MODE>
+```
+
+or, where supported by a release build:
+
+```powershell
+ALIOTH.exe <MODE>
+```
+
+Examples:
+
+```powershell
+ALIOTH.exe 1
+ALIOTH.exe 2
+ALIOTH.exe 3
+...
+ALIOTH.exe 13
+```
+
+The project documentation defines these as modes `1` through `13`.
+
+---
+
+# Payload / `.bin` Workflow
+
+Several ALIOTH components operate on binary payload artifacts.
+
+The general workflow is:
+
+```text
+Payload
+   │
+   ▼
+.bin artifact
+   │
+   ▼
+Mode-specific preparation
+   │
+   ▼
+ALIOTH build
+   │
+   ▼
+Authorized target
+```
+
+For example, Charon uses a binary payload artifact and a dedicated preparation utility before the resulting artifact is incorporated into the build. The supplied documentation identifies `charon_builder.py` as the relevant preparation component.
+
+A generic workflow looks like:
+
+```powershell
+python <mode-builder> --payload <payload.bin> --output <artifact>
+```
+
+Then rebuild:
+
+```powershell
+.\build.bat
+```
+
+
+# Active Directory Engagement
+
+A common authorized assessment architecture:
+
+```text
+                RED TEAM
+                   │
+                   ▼
+          Operator Infrastructure
+                   │
+             ALIOTH / C2
+                   │
+       ┌───────────┴────────────┐
+       │                        │
+       ▼                        ▼
+ Domain Controller          Workstations
+       │                        │
+       ├── Identity             ├── Users
+       ├── Kerberos             ├── Admins
+       ├── LDAP                 ├── EDR
+       └── Group Policy         └── Applications
+```
+
+# Engagement Profiles
+
+ALIOTH can be incorporated into several types of authorized engagements.
+
+## External Red Team
+
+Focus:
+
+```text
+Internet-facing asset
+       ↓
+Initial access
+       ↓
+Endpoint compromise
+       ↓
+Internal access
+       ↓
+Identity expansion
+       ↓
+Objective
+```
+
+## Internal Red Team
+
+Focus:
+
+```text
+Internal foothold
+       ↓
+AD enumeration
+       ↓
+Privilege boundaries
+       ↓
+Credential access
+       ↓
+Lateral movement
+       ↓
+High-value asset
+```
+
+## Purple Team
+
+Focus on measurable detection:
+
+```text
+ALIOTH Technique
+       ↓
+Telemetry
+       ↓
+Detection
+       ↓
+SOC Alert
+       ↓
+Analyst Response
+       ↓
+Rule Improvement
+```
+
+## Malware Analysis
+
+ALIOTH can also be used as a research subject when studying:
+
+* Memory execution
+* Windows internals
+* Endpoint telemetry
+* Process behavior
+* Authentication behavior
+* Persistence mechanisms
+* Network behavior
+* EDR detections
+
+Use an isolated analysis environment and appropriate snapshots.
+
+---
+
+# Environment Preparation
+
+A mature engagement environment should contain:
+
+```text
+Operator Host
+       │
+       ├── Source / Build Environment
+       ├── Debugging Tools
+       ├── Logging
+       └── Engagement Notes
+                │
+                ▼
+        Red-Team Infrastructure
+                │
+        ┌───────┴────────┐
+        │                │
+       C2              Proxy
+        │
+        ▼
+    Target Network
+```
+
+For AD assessments, maintain accurate inventory of:
+
+```text
+Domain
+Domain Controllers
+Workstations
+Servers
+Administrative Accounts
+Service Accounts
+Security Products
+Network Segments
+Critical Applications
+```
+
+---
+
+# Safety Controls During Engagement
+
+Recommended operational controls:
+
+### Scope Enforcement
+
+Keep an explicit target allowlist.
+
+```text
+ALLOW:
+  *.authorized-domain.local
+  10.10.10.0/24
+
+DENY:
+  Everything else
+```
+
+# Configuration
+
+Project configuration is centralized through the shared core configuration layer.
+
+Relevant source components include:
+
+```text
+core/ALIOTH_config.h
+core/tls_context.h
+core/engine.h
+```
+
+The supplied project structure documents these components as part of the common execution engine.
+
+Keep engagement-specific configuration outside public source repositories.
+
+---
+
+# Mode Invocation Convention
+
+The framework follows a consistent convention:
+
+```text
+ALIOTH.exe --mode <MODE> [OPTIONS]
+```
+
+Common option categories include:
+
+```text
+--payload <file>
+--target <name>
+--output <file>
+--pid <pid>
+--server <host>
+--port <port>
+--sleep <seconds>
+--jitter <seconds>
+```
+
+Mode-specific options are exposed by the corresponding module.
+
+For security reasons, the public README intentionally avoids providing turnkey command lines for credential extraction, persistence, C2 deployment, unauthorized lateral movement, or security-control bypass.
+
+---
+
+# Detection Engineering Integration
+
+ALIOTH is particularly useful when offensive activity is paired with defensive telemetry.
+
+```text
+              ALIOTH
+                 │
+                 ▼
+          Technique Execution
+                 │
+        ┌────────┼────────┐
+        ▼        ▼        ▼
+      EDR      Sysmon    SIEM
+        │        │        │
+        └────────┼────────┘
+                 ▼
+             Detection
+                 │
+                 ▼
+            SOC Response
+                 │
+                 ▼
+         Detection Tuning
+```
+
+This makes the framework useful for validating whether security controls detect **behavior**, rather than merely matching known malware hashes.
+
+---
+
+# Source Tree
+
+```text
+ALIOTH/
+│
+├── ALIOTH.exe
+├── build.bat
+├── README.md
+│
+├── core/
+│   ├── ALIOTH.h
+│   ├── ALIOTH_config.h
+│   ├── tls_context.h
+│   ├── engine.h
+│   ├── engine.c
+│   ├── syscalls_base.asm
+│   ├── generate_stubs.py
+│   ├── etw_patch.c
+│   ├── hwbp_check.c
+│   ├── random_mask.c
+│   ├── decoy_threads.c
+│   └── utils.c
+│
+└── modes/
+    ├── umbra/
+    ├── charon/
+    │   └── builder/
+    ├── wraith/
+    ├── revenant/
+    ├── mortis/
+    ├── shadow/
+    ├── hermes/
+    ├── eos/
+    ├── helios/
+    ├── nyx/
+    ├── acheron/
+    ├── lachesis/
+    └── tartarus/
+```
+
+The project documentation identifies the shared core and all thirteen mode directories.
+
+---
+
+# Version
+
+```text
+Project     : ALIOTH
+Version     : 3.0
+Category    : Offensive Security Framework
+Platform    : Windows x64
+Author      : sn0x
+Purpose     : Authorized Security Testing
+```
+
+The supplied guide identifies the project as ALIOTH v3.0 and labels it for authorized security testing.
+
+---
+
+# Disclaimer
+
+ALIOTH is an offensive security research framework.
+
+Use only where you have explicit authorization and an established scope of work.
+
+The author is not responsible for damage, disruption, data loss, credential exposure, unauthorized access, or any other consequence resulting from misuse or deployment outside an authorized engagement.
+
+ALIOTH exists to reproduce realistic adversarial behavior so security teams can understand where their controls succeed, where they fail, and what needs to be improved.

@@ -117,24 +117,8 @@ ALIOTH can be incorporated into authorized assessments involving:
 * Internal network segments
 
 ### Red-Team Infrastructure
+<img width="1536" height="1024" alt="ChatGPT Image Aug 23, 2026, 05_35_40 AM" src="https://github.com/user-attachments/assets/28412be4-f34a-443b-b8f2-cf78294afc83" />
 
-A typical engagement may contain:
-
-```text
-                RED TEAM
-                   │
-            ┌──────┴──────┐
-            │ Operator    │
-            │ Workstation │
-            └──────┬──────┘
-                   │
-              ALIOTH
-                   │
-        ┌──────────┼──────────┐
-        │          │          │
-      C2/      Internal    Target
-   Infrastructure Network   Hosts
-```
 
 ---
 

@@ -1,4 +1,4 @@
-<img width="1983" height="793" alt="ChatGPT Image Aug 24, 2026, 07_41_21 AM" src="https://github.com/user-attachments/assets/8e62e5c0-2f3e-4dfb-b934-4ffaffebc067" />
+<img width="1983" height="793" alt="ALIOTH" src="https://github.com/user-attachments/assets/91acfe5f-0592-4033-ba9a-b150b569ddd9" />
 
 
 **ALIOTH** is a Windows-focused offensive security framework designed for authorized red-team operations, enterprise adversary simulation, malware analysis, security-control validation, and post-exploitation research.

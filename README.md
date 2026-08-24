@@ -8,6 +8,11 @@
 [![Focus](https://img.shields.io/badge/Focus-Red%20Team%20%7C%20Adversary%20Simulation-orange)]()
 [![Version](https://img.shields.io/badge/Version-3.0-black)]()
 
+⚔️ Operational Documentation
+
+For the complete ALIOTH v3.0 walkthrough—including commands, operational usage, and a fictional enterprise APT/red-team scenario demonstrating the framework end-to-end:
+https://sn0xs-organization.gitbook.io/sn0x-order.org/red-team-notes/alioth-unified-apt-framework-v3.0
+
 ---
 
 Use cases include:

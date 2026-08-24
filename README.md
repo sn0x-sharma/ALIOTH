@@ -10,7 +10,7 @@
 
 ⚔️ Operational Documentation
 
-For the complete ALIOTH v3.0 walkthrough—including commands, operational usage, and a fictional enterprise APT/red-team scenario demonstrating the framework end-to-end:
+For the complete ALIOTH v3.0 walkthrough including commands, operational usage, and a fictional enterprise APT/red-team scenario demonstrating the framework end-to-end:
 https://sn0xs-organization.gitbook.io/sn0x-order.org/red-team-notes/alioth-unified-apt-framework-v3.0
 
 ---

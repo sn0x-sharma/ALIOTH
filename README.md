@@ -31,11 +31,9 @@ The framework is intended to model real-world adversary behavior in controlled e
 
 # What is ALIOTH?
 
-ALIOTH is a unified offensive framework that brings multiple Windows post-exploitation and adversary-emulation capabilities into a common architecture.
+ALIOTH is a unified offensive security framework that combines 13 attack modes into a single standalone binary. No DLL dependencies, no runtime installers one .exe that covers the complete attack chain from initial access to data exfiltration and anti-forensics.
 
-Instead of maintaining separate proof-of-concept tooling for every stage of an operation, ALIOTH provides a single framework containing **13 operational modules** backed by shared execution, cryptographic, memory, and research infrastructure.
-
-The supplied project documentation describes ALIOTH v3.0 as a unified framework combining the original capabilities of several predecessor projects with additional post-exploitation and automation modules.
+Every mode shares a common evasion engine indirect syscalls, stack spoofing, gadget rotation, ETW patching, HWBP clearing, polymorphic stubs. This is not a toolbox with 13 separate signatures. It is one binary, one evasion layer, protecting everything underneath.
 
 At a high level:
 

